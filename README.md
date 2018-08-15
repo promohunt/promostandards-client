@@ -59,3 +59,10 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the `promostandards-client` project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/promohunt/promostandards-client/blob/master/CODE_OF_CONDUCT.md).
+
+## About PromoHunt
+![PromoHunt Logo](https://s3.amazonaws.com/promohunt-production/static/brand/promohunt_logo_with_text_medium.png)
+
+promostandards-client is maintained and funded by PromoHunt, inc. The names and logos for PromoHunt are trademarks of PromoHunt, inc.
+
+PromoHunt is a browser extension that helps promotional products distributors & suppliers save time and money.
