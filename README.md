@@ -16,7 +16,7 @@ Currently, only interfaces the [Product Data](https://promostandards.org/service
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'promostandards-client',  :github => 'promohunt/promostandards-client'
+gem 'promostandards-client',  git: 'https://github.com/promohunt/promostandards-client'
 ```
 
 And then execute:
