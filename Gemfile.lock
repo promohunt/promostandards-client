@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    promostandards-client (0.1.0)
+    promostandards-client (0.1.1)
       httparty
       savon (~> 2.12.0)
 
@@ -17,7 +17,7 @@ GEM
       builder (>= 2.1.2)
     httparty (0.16.2)
       multi_xml (>= 0.5.2)
-    httpi (2.4.3)
+    httpi (2.4.4)
       rack
       socksify
     mini_portile2 (2.3.0)

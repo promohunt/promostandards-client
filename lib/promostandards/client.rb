@@ -4,10 +4,10 @@ require 'promostandards/client/version'
 
 module PromoStandards
   class Client
-    def get_sellable_product_ids_for(company_code:, username:, password:)
+    def get_sellable_product_ids_for(company_code:, access_id:, password:)
       soap_client = PromoStandards::SOAP::Client.new(
         svc_url: svc_url(company_code),
-        username: username,
+        access_id: access_id,
         password: password
       )
       soap_client.get_sellable_product_ids.map do |minimal_product|

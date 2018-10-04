@@ -3,8 +3,8 @@ require 'savon'
 module PromoStandards
   module SOAP
     class Client
-      def initialize(svc_url:, username:, password:)
-        @username = username
+      def initialize(svc_url:, access_id:, password:)
+        @access_id = access_id
         @password = password
         @client = Savon.client(
           endpoint: svc_url,
@@ -19,9 +19,9 @@ module PromoStandards
         response = @client.call('GetProductSellableRequest',
           message: {
             'shar:wsVersion' => '1.0.0', # This needs to be gotten from the meta api
-            'shar:id' => @username,
+            'shar:id' => @access_id,
             'shar:password' => @password,
-            'shar:isSellable' => true 
+            'shar:isSellable' => true
           },
           soap_action: 'getProductSellable'
         )

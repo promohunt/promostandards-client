@@ -33,7 +33,7 @@ client = PromoStandards::Client.new
 
 product_ids = client.get_sellable_product_ids_for(
   company_code: 'STAR',
-  username: 'username',
+  access_id: 'access_id',
   password: 'password'
 )
 ```
