@@ -4,22 +4,41 @@ require 'promostandards/client/version'
 
 module PromoStandards
   class Client
-    def get_sellable_product_ids_for(company_code:, access_id:, password:)
-      soap_client = PromoStandards::SOAP::Client.new(
-        svc_url: svc_url(company_code),
-        access_id: access_id,
-        password: password
-      )
-      soap_client.get_sellable_product_ids.map do |minimal_product|
+    def initialize(access_id:, password:, product_data_service_url:, media_content_service_url:)
+      @soap_client = build_soap_client(access_id, password)
+      @product_data_service_url = product_data_service_url
+      @media_content_service_url = media_content_service_url
+    end
+
+    def get_sellable_product_ids
+      @soap_client.get_sellable_product_ids(
+        product_data_service_url: @product_data_service_url
+      ).map do |minimal_product|
         minimal_product[:product_id]
       end
     end
 
+    def get_product_data(product_id)
+      @soap_client.get_product(
+        product_data_service_url: @product_data_service_url,
+        product_id: product_id
+      )
+    end
+
+    def get_primary_image(product_id)
+      @soap_client.get_primary_image(
+        media_content_service_url: @media_content_service_url,
+        product_id: product_id
+      )
+    end
+
     private
 
-    def svc_url(company_code)
-      meta_api_client = PromoStandards::MetaApi::Client.new
-      meta_api_client.get_product_svc_url(company_code)
+    def build_soap_client(access_id, password)
+      PromoStandards::SOAP::Client.new(
+        access_id: access_id,
+        password: password
+      )
     end
   end
 end
