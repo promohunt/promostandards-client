@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    promostandards-client (0.1.1)
+    promostandards-client (0.2.0)
       httparty
       savon (~> 2.12.0)
 
@@ -22,7 +22,7 @@ GEM
       socksify
     mini_portile2 (2.3.0)
     multi_xml (0.6.0)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     nori (2.6.0)
     rack (2.0.5)
