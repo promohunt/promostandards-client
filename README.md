@@ -2,13 +2,13 @@
 
 A Ruby client to access [PromoStandards](https://promostandards.org) data from suppliers.
 
-Currently, only interfaces the [Product Data](https://promostandards.org/service/view/7/) service. You can get ids of all sellable products for a given supplier.
+Currently, only interfaces some of the [Product Data](https://promostandards.org/service/view/7/) and the [Media Content](https://promostandards.org/service/view/11/) services.
 
 #### TO DO
-- [ ] Add tests
-- [ ] Handle the case when the given company code is incorrect
-- [ ] Return both `product_id` and `part_id` both
+- [x] Add tests
+- [ ] Return `nil` when primary image is not available
 - [ ] Provide interfaces to other [services](https://promostandards.org/service/overview/) as well
+
 
 
 ## Installation
@@ -29,15 +29,22 @@ And then execute:
 ```ruby
 require 'promostandards/client.rb'
 
-client = PromoStandards::Client.new
-
-product_ids = client.get_sellable_product_ids_for(
-  company_code: 'STAR',
-  access_id: 'access_id',
-  password: 'password'
+client = PromoStandards::Client.new(
+  access_id: 'YOUR ID'
+  password: 'YOUR PASSWORD'
+  product_data_service_url: 'https://services.starline.com/CustomerProductDataService/CustomerProductDataService.svc'
+  media_content_service_url: 'https://services.starline.com/MediaContentService/MediaContentService.svc'
 )
-```
 
+# Get sellable product ids
+product_ids = client.get_sellable_product_ids
+
+# Get product data
+product_hash = client.get_product_data('product_id')
+
+# Get primary product image
+primary_image = client.get_primary_image('product_id')
+```
 
 ## Development
 

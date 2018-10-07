@@ -44,11 +44,15 @@ module PromoStandards
           'shar:password' => @password,
           'shar:localizationCountry' => 'US',
           'shar:localizationLanguage' => 'en',
-          'shar:productId' => product_id,
+          'shar:productId' => product_id
         },
         soap_action: 'getProduct'
       )
-      response.body[:get_product_response][:product]
+      product_hash = response.body[:get_product_response][:product]
+      if(product_hash[:description]).is_a? Array
+        product_hash[:description] = product_hash[:description].join('\n')
+      end
+      product_hash
     end
 
     def get_primary_image(product_id)
@@ -64,10 +68,11 @@ module PromoStandards
         },
         soap_action: 'getMediaContent'
       )
-      if response.body[:get_media_content_response][:media_content_array][:media_content].is_a? Array
-        response.body[:get_media_content_response][:media_content_array][:media_content].first
+      media_content = response.body[:get_media_content_response][:media_content_array][:media_content]
+      if media_content.is_a? Array
+        media_content.first
       else
-        response.body[:get_media_content_response][:media_content_array][:media_content]
+        media_content
       end
     end
 

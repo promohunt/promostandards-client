@@ -9,3 +9,6 @@
 
 # rspec failure tracking
 .rspec_status
+
+# PromoStandards credentials for tests
+/spec/promostandards/ps_configs.yml
