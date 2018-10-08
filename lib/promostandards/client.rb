@@ -29,10 +29,10 @@ module PromoStandards
         },
         soap_action: 'getProductSellable'
       )
-      response.body[:get_product_sellable_response][:product_sellable_array][:product_sellable]
-        .map do |minimal_product|
-          minimal_product[:product_id]
-        end
+      response
+        .body[:get_product_sellable_response][:product_sellable_array][:product_sellable]
+        .map { |product_data| product_data[:product_id] }
+        .uniq
     end
 
     def get_product_data(product_id)

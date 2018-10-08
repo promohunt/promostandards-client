@@ -30,8 +30,39 @@ RSpec.describe Promostandards::Client do
       })
     end
 
+    let(:savon_response_with_duplicates) do
+      double(:savon_response, body: {
+        get_product_sellable_response: {
+          product_sellable_array: {
+            product_sellable: [
+              {
+                product_id: 'prod id 1',
+                part_id: 'part id 1'
+              },
+              {
+                product_id: 'prod id 2',
+                part_id: 'part id 2'
+              },
+              {
+                product_id: 'prod id 2',
+                part_id: 'part id 3'
+              }
+            ]
+          }
+        }
+      })
+    end
+
     it 'returns the product ids' do
       allow(savon_client).to receive(:call).and_return savon_response
+
+      expect(ps_client.get_sellable_product_ids).to eql(
+        ['prod id 1', 'prod id 2']
+      )
+    end
+
+    it 'removes duplicate product ids when returning' do
+      allow(savon_client).to receive(:call).and_return savon_response_with_duplicates
 
       expect(ps_client.get_sellable_product_ids).to eql(
         ['prod id 1', 'prod id 2']
