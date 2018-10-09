@@ -53,6 +53,17 @@ RSpec.describe Promostandards::Client do
       })
     end
 
+    it 'ensures the structure of the message body' do
+      allow(savon_client).to receive(:call) do |arg1, arg2|
+        expect(arg2[:message].keys).to eql(
+          ["shar:wsVersion", "shar:id", "shar:password", "shar:isSellable"]
+        )
+        savon_response
+      end
+
+      ps_client.get_sellable_product_ids
+    end
+
     it 'returns the product ids' do
       allow(savon_client).to receive(:call).and_return savon_response
 
@@ -68,44 +79,6 @@ RSpec.describe Promostandards::Client do
         ['prod id 1', 'prod id 2']
       )
     end
-  end
-
-  describe '#get_primary_image' do
-    let(:savon_response) do
-      double(:savon_response, body: {
-        get_media_content_response: {
-          media_content_array: {
-            media_content: { url: 'image_url' }
-          }
-        }
-      })
-    end
-
-    let(:savon_response_with_muti_media_content) do
-      double(:savon_response, body: {
-        get_media_content_response: {
-          media_content_array: {
-            media_content: [
-              { url: 'image_url_1' },
-              { url: 'image_url_2' }
-            ]
-          }
-        }
-      })
-    end
-
-    it 'extracts the media content object from the response' do
-      allow(savon_client).to receive(:call).and_return savon_response
-
-      expect(ps_client.get_primary_image('product_id')).to eql(url: 'image_url')
-    end
-
-    it 'returns the first one when the service reponse has an array of media content objects' do
-      allow(savon_client).to receive(:call).and_return savon_response_with_muti_media_content
-
-      expect(ps_client.get_primary_image('product_id')).to eql(url: 'image_url_1')
-    end
-
   end
 
   describe '#get_product_data' do
@@ -134,6 +107,17 @@ RSpec.describe Promostandards::Client do
       })
     end
 
+    it 'ensures the structure of the message body' do
+      allow(savon_client).to receive(:call) do |arg1, arg2|
+        expect(arg2[:message].keys).to eql(
+          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:localizationCountry', 'shar:localizationLanguage', 'shar:productId']
+        )
+        savon_response
+      end
+
+      ps_client.get_product_data 'product_id'
+    end
+
     it 'extracts the product data from the response' do
       allow(savon_client).to receive(:call).and_return savon_response
 
@@ -148,6 +132,55 @@ RSpec.describe Promostandards::Client do
       expect(ps_client.get_product_data('product_id')).to eql({
         description: 'product description 1\nproduct description 2'
       })
+    end
+
+  end
+
+  describe '#get_primary_image' do
+    let(:savon_response) do
+      double(:savon_response, body: {
+        get_media_content_response: {
+          media_content_array: {
+            media_content: { url: 'image_url' }
+          }
+        }
+      })
+    end
+
+    let(:savon_response_with_muti_media_content) do
+      double(:savon_response, body: {
+        get_media_content_response: {
+          media_content_array: {
+            media_content: [
+              { url: 'image_url_1' },
+              { url: 'image_url_2' }
+            ]
+          }
+        }
+      })
+    end
+
+    it 'ensures the structure of the message body' do
+      allow(savon_client).to receive(:call) do |arg1, arg2|
+        expect(arg2[:message].keys).to eql(
+          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:mediaType', 'shar:productId', 'ns:classType']
+        )
+        savon_response
+      end
+
+      ps_client.get_primary_image 'product_id'
+    end
+
+    it 'extracts the media content object from the response' do
+      allow(savon_client).to receive(:call).and_return savon_response
+
+      expect(ps_client.get_primary_image('product_id')).to eql(url: 'image_url')
+    end
+
+    it 'returns the first one when the service reponse has an array of media content objects' do
+      allow(savon_client).to receive(:call).and_return savon_response_with_muti_media_content
+
+      expect(ps_client.get_primary_image('product_id')).to eql(url: 'image_url_1')
     end
 
   end
