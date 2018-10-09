@@ -1,3 +1,5 @@
+# Requires a ps_configs.yml file. See ps_configs.yml.example
+
 RSpec.describe Promostandards::Client do
   let(:ps_client) do
     ps_config = YAML::load_file(File.join(__dir__, 'ps_configs.yml')).first
