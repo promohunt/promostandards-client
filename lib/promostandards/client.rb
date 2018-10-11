@@ -68,7 +68,7 @@ module PromoStandards
         },
         soap_action: 'getMediaContent'
       )
-      media_content = response.body[:get_media_content_response][:media_content_array][:media_content]
+      media_content = response.body.dig(:get_media_content_response, :media_content_array, :media_content)
       if media_content.is_a? Array
         media_content.first
       else

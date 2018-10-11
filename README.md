@@ -6,7 +6,7 @@ Currently, only interfaces some of the [Product Data](https://promostandards.org
 
 #### TO DO
 - [x] Add tests
-- [ ] Return `nil` when primary image is not available
+- [x] Return `nil` when primary image is not available
 - [ ] Provide interfaces to other [services](https://promostandards.org/service/overview/) as well
 
 

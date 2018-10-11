@@ -162,6 +162,27 @@ RSpec.describe Promostandards::Client do
       })
     end
 
+    let(:savon_response_with_error_1) do
+      double(:savon_response, body: {
+        error: {
+          description: 'Some error'
+        }
+      })
+    end
+
+    let(:savon_response_with_error_2) do
+      double(:savon_response, body: {
+        get_media_content_response: {
+          error_message: {
+            code: "125",
+            description: "Limit of request to a specific Media Classtype is not currently supported",
+            :@xmlns=>"http://www.promostandards.org/WSDL/MediaService/1.0.0/SharedObjects/"
+          },
+          :@xmlns=>"http://www.promostandards.org/WSDL/MediaService/1.0.0/"
+        }
+      })
+    end
+
     it 'ensures the structure of the message body' do
       allow(savon_client).to receive(:call) do |arg1, arg2|
         expect(arg2[:message].keys).to eql(
@@ -183,6 +204,13 @@ RSpec.describe Promostandards::Client do
       allow(savon_client).to receive(:call).and_return savon_response_with_muti_media_content
 
       expect(ps_client.get_primary_image('product_id')).to eql(url: 'image_url_1')
+    end
+
+    it 'returns nil if the response is not well formed' do
+      [savon_response_with_error_1, savon_response_with_error_2].each do |savon_response_with_error|
+        allow(savon_client).to receive(:call).and_return savon_response_with_error
+        expect(ps_client.get_primary_image('product_id')).to be_nil
+      end
     end
 
   end
