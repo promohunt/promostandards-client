@@ -119,6 +119,5 @@ module PromoStandards
         }
       )
     end
-
   end
 end

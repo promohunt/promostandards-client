@@ -183,10 +183,74 @@ RSpec.describe Promostandards::Client do
       })
     end
 
+    let(:savon_response_with_1006_image) do
+      double(:savon_response, body: {
+        get_media_content_response: {
+          media_content_array: {
+            media_content: [
+              {
+                product_id: "GNS6K424",
+                url: "1006_image_url",
+                media_type: "Image",
+                class_type_array: { class_type: { class_type_id: "1006", class_type_name: "Rear" } },
+                color: "Almond",
+                single_part: true
+              },
+              {
+                product_id: "GNS6K424",
+                url: "1008_image_url",
+                media_type: "Image",
+                class_type_array: { class_type: { class_type_id: "1008", class_type_name: "Back" } },
+                color: "Almond",
+                single_part: true
+              }
+            ]
+          }
+        }
+      })
+    end
+
+    let(:savon_response_with_multiple_class_types) do
+      double(:savon_response, body: {
+        get_media_content_response: {
+          media_content_array: {
+            media_content: [
+              {
+                product_id: "GNS6K424",
+                url: "1009_image_url",
+                media_type: "Image",
+                class_type_array: { class_type: { class_type_id: "1009", class_type_name: "Rear" } },
+                color: "Almond",
+                single_part: true
+              },
+              {
+                product_id: "GNS6K424",
+                url: "1007_1001_2001_image_url",
+                media_type: "Image",
+                class_type_array: [
+                  {
+                    class_type: { class_type_id: "1007", class_type_name: "Back" }
+                  },
+                  {
+                    class_type: { class_type_id: "1001", class_type_name: "Front" }
+                  },
+                  {
+                    class_type: { class_type_id: "2001", class_type_name: "Top" }
+                  }
+                  ],
+                color: "Almond",
+                single_part: true
+              }
+            ]
+          }
+        }
+      })
+    end
+
     it 'ensures the structure of the message body' do
       allow(savon_client).to receive(:call) do |arg1, arg2|
         expect(arg2[:message].keys).to eql(
-          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:mediaType', 'shar:productId', 'ns:classType']
+          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:mediaType', 'shar:productId']
         )
         savon_response
       end
@@ -211,6 +275,42 @@ RSpec.describe Promostandards::Client do
         allow(savon_client).to receive(:call).and_return savon_response_with_error
         expect(ps_client.get_primary_image('product_id')).to be_nil
       end
+    end
+
+    it 'returns image with code 1006 if present' do
+      allow(savon_client).to receive(:call).and_return savon_response_with_1006_image
+
+      expect(ps_client.get_primary_image('product_id')).to eql({
+        product_id: "GNS6K424",
+        url: "1006_image_url",
+        media_type: "Image",
+        class_type_array: { class_type: { class_type_id: "1006", class_type_name: "Rear" } },
+        color: "Almond",
+        single_part: true
+      })
+    end
+
+    it 'returns image with multiple codes if present in precedence order' do
+      allow(savon_client).to receive(:call).and_return savon_response_with_multiple_class_types
+
+      expect(ps_client.get_primary_image('product_id')).to eql({
+        product_id: "GNS6K424",
+        url: "1007_1001_2001_image_url",
+        media_type: "Image",
+        class_type_array: [
+          {
+            class_type: { class_type_id: "1007", class_type_name: "Back" }
+          },
+          {
+            class_type: { class_type_id: "1001", class_type_name: "Front" }
+          },
+          {
+            class_type: { class_type_id: "2001", class_type_name: "Top" }
+          }
+          ],
+        color: "Almond",
+        single_part: true
+      })
     end
 
   end
