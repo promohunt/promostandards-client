@@ -11,7 +11,7 @@ module PromoStandards
       namespace_identifier: :ns
     }
 
-    PRIMARY_IMAGE_PRECEDENCE = ['1006', ['1007', '1001', '2001'], ['1007', '1001'], '1007', '1003']
+    PRIMARY_IMAGE_PRECEDENCE = ['1006', ['1007', '1001', '2001'], ['1007', '1001'], '1007', ['1001', '2001'], '1001', '1003']
 
     def initialize(access_id:, password:, product_data_service_url:, media_content_service_url:)
       @access_id = access_id
