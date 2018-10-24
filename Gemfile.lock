@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    promostandards-client (0.4.2)
+    promostandards-client (0.4.3)
       httparty
       savon (~> 2.12.0)
 
