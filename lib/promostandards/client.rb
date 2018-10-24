@@ -77,18 +77,20 @@ module PromoStandards
 
         PRIMARY_IMAGE_PRECEDENCE.find do |image_precendence_number|
           primary_media_content = media_content.find do |media|
-            class_type_array = media[:class_type_array]
+            class_type_array = media[:class_type_array][:class_type]
 
-            if class_type_array.is_a?(Hash) && image_precendence_number.is_a?(String)
-              [media[:class_type_array][:class_type][:class_type_id]].include?(image_precendence_number)
+            class_type_ids = []
+
+            if class_type_array.is_a?(Hash)
+              class_type_ids = [class_type_array[:class_type_id]]
             elsif class_type_array.is_a?(Array)
-              class_type_ids = media[:class_type_array].map { |item| item[:class_type][:class_type_id] }
+              class_type_ids = class_type_array.map { |item| item[:class_type_id] }
+            end
 
-              if image_precendence_number.is_a?(Array)
-                (class_type_ids & image_precendence_number).any?
-              else
-                class_type_ids.include?(image_precendence_number)
-              end
+            if image_precendence_number.is_a?(Array)
+              (class_type_ids & image_precendence_number).any?
+            else
+              class_type_ids.include?(image_precendence_number)
             end
           end
         end
