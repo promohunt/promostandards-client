@@ -11,6 +11,8 @@ module PromoStandards
       namespace_identifier: :ns
     }
 
+    PRIMARY_IMAGE_PRECEDENCE = ['1006', ['1007', '1001', '2001'], ['1007', '1001'], '1007', '1003']
+
     def initialize(access_id:, password:, product_data_service_url:, media_content_service_url:)
       @access_id = access_id
       @password = password
@@ -64,13 +66,35 @@ module PromoStandards
           'shar:password' => @password,
           'shar:mediaType' => 'Image',
           'shar:productId' => product_id,
-          'ns:classType' => '1006'
         },
         soap_action: 'getMediaContent'
       )
+
       media_content = response.body.dig(:get_media_content_response, :media_content_array, :media_content)
+
       if media_content.is_a? Array
-        media_content.first
+        primary_media_content = nil
+
+        PRIMARY_IMAGE_PRECEDENCE.find do |image_precendence_number|
+          primary_media_content = media_content.find do |media|
+            class_type_array = media[:class_type_array][:class_type]
+
+            class_type_ids = []
+
+            if class_type_array.is_a?(Hash)
+              class_type_ids = [class_type_array[:class_type_id]]
+            elsif class_type_array.is_a?(Array)
+              class_type_ids = class_type_array.map { |item| item[:class_type_id] }
+            end
+
+            if image_precendence_number.is_a?(Array)
+              (class_type_ids & image_precendence_number).any?
+            else
+              class_type_ids.include?(image_precendence_number)
+            end
+          end
+        end
+        primary_media_content || media_content.first
       else
         media_content
       end
@@ -97,6 +121,5 @@ module PromoStandards
         }
       )
     end
-
   end
 end
