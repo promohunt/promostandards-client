@@ -227,17 +227,22 @@ RSpec.describe Promostandards::Client do
                 product_id: "GNS6K424",
                 url: "1007_1001_2001_image_url",
                 media_type: "Image",
-                class_type_array: [
-                  {
-                    class_type: { class_type_id: "1007", class_type_name: "Back" }
-                  },
-                  {
-                    class_type: { class_type_id: "1001", class_type_name: "Front" }
-                  },
-                  {
-                    class_type: { class_type_id: "2001", class_type_name: "Top" }
-                  }
-                  ],
+                class_type_array: {
+                  class_type: [
+                    {
+                      class_type_id: "1007",
+                      class_type_name: "Back"
+                    },
+                    {
+                      class_type_id: "1001",
+                      class_type_name: "Front"
+                    },
+                    {
+                      class_type_id: "2001",
+                      class_type_name: "Top"
+                      }
+                  ]
+                },
                 color: "Almond",
                 single_part: true
               }
@@ -297,17 +302,22 @@ RSpec.describe Promostandards::Client do
         product_id: "GNS6K424",
         url: "1007_1001_2001_image_url",
         media_type: "Image",
-        class_type_array: [
-          {
-            class_type: { class_type_id: "1007", class_type_name: "Back" }
-          },
-          {
-            class_type: { class_type_id: "1001", class_type_name: "Front" }
-          },
-          {
-            class_type: { class_type_id: "2001", class_type_name: "Top" }
-          }
-          ],
+        class_type_array: {
+          class_type: [
+            {
+              class_type_id: "1007",
+              class_type_name: "Back"
+            },
+            {
+              class_type_id: "1001",
+              class_type_name: "Front"
+            },
+            {
+              class_type_id: "2001",
+              class_type_name: "Top"
+              }
+          ]
+        },
         color: "Almond",
         single_part: true
       })
