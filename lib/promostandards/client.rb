@@ -56,6 +56,8 @@ module PromoStandards
         product_hash[:description] = product_hash[:description].join('\n')
       end
       product_hash
+    rescue => exception
+      raise exception.class, "#{exception} - get_product_data failed!"
     end
 
     def get_primary_image(product_id)
@@ -74,6 +76,8 @@ module PromoStandards
       media_content = response.body.dig(:get_media_content_response, :media_content_array, :media_content)
 
       PrimaryImageExtractor.new.extract(media_content)
+    rescue => exception
+      raise exception.class, "#{exception} - get_primary_image failed!"
     end
 
     private
