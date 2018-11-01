@@ -12,3 +12,4 @@
 
 # PromoStandards credentials for tests
 /spec/promostandards/ps_configs.yml
+ps_configs.yml

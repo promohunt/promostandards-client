@@ -46,6 +46,13 @@ product_hash = client.get_product_data('product_id')
 primary_image = client.get_primary_image('product_id')
 ```
 
+## Testing PromoStandards end points
+* Add credentials and service URLs to a `ps_configs.yml` (See `ps_configs.yml.example`)
+* Run `bundle exec ruby test_ps_services.rb`
+
+This would use the data in the YAML file, make sample requests to all the supplier services and log outcomes. This is useful to
+test out the services end to end.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
