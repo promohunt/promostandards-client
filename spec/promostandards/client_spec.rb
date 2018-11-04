@@ -1,8 +1,11 @@
-# Requires a ps_configs.yml file. See ps_configs.yml.example
-
 RSpec.describe Promostandards::Client do
   let(:ps_client) do
-    ps_config = YAML::load_file(File.join(__dir__, 'ps_configs.yml')).first
+    ps_config = {
+      access_id: 'access_id',
+      password: 'password',
+      product_data_service_url: 'https://psproductdata100.pcna.online/',
+      media_content_service_url: 'https://psmediacontent110.pcna.online/'
+    }
     PromoStandards::Client.new ps_config
   end
 
