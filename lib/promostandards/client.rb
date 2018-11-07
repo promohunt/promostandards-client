@@ -1,5 +1,6 @@
 require_relative 'meta_api/client'
 require 'promostandards/client/version'
+require 'promostandards/client/no_service_url_error'
 require 'savon'
 require 'promostandards/primary_image_extractor'
 
@@ -61,6 +62,7 @@ module PromoStandards
     end
 
     def get_primary_image(product_id)
+      raise Promostandards::Client::NoServiceUrlError, 'Media content service URL not set!' unless @media_content_service_url
       client = build_savon_client_for_media(@media_content_service_url)
       response = client.call('GetMediaContentRequest',
         message: {
