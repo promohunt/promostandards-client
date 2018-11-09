@@ -14,7 +14,7 @@ module PromoStandards
 
     PRIMARY_IMAGE_PRECEDENCE = ['1006', ['1007', '1001', '2001'], ['1007', '1001'], '1007', ['1001', '2001'], '1001', '1003']
 
-    def initialize(config = {})
+    def initialize(access_id:, password: nil, product_data_service_url:, media_content_service_url: nil)
       @access_id = config[:access_id]
       @password = config[:password]
       @product_data_service_url = config[:product_data_service_url]
