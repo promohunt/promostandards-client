@@ -10,5 +10,7 @@
 # rspec failure tracking
 .rspec_status
 
+.byebug_history
+
 # PromoStandards credentials for tests
 ps_configs.yml
