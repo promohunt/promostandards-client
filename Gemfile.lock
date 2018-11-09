@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    promostandards-client (0.5.4)
+    promostandards-client (0.5.5)
       httparty
       savon (~> 2.12.0)
 
@@ -36,7 +36,7 @@ GEM
     pry-byebug (3.4.3)
       byebug (>= 9.0, < 9.1)
       pry (~> 0.10)
-    rack (2.0.5)
+    rack (2.0.6)
     rake (12.3.1)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
