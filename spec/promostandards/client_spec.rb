@@ -1,14 +1,13 @@
 RSpec.describe Promostandards::Client do
-  let(:ps_client) do
-    ps_config = {
+  let(:ps_config) do
+    {
       access_id: 'access_id',
       password: 'password',
       product_data_service_url: 'https://psproductdata100.pcna.online/',
       media_content_service_url: 'https://psmediacontent110.pcna.online/'
     }
-    PromoStandards::Client.new ps_config
   end
-
+  let(:ps_client) { PromoStandards::Client.new ps_config }
   let(:savon_client) { double('SavonClient') }
 
   before do
@@ -253,6 +252,15 @@ RSpec.describe Promostandards::Client do
           }
         }
       })
+    end
+
+    it 'raises an exception when the service URL is not available' do
+      ps_config[:media_content_service_url] = nil
+      ps_client = PromoStandards::Client.new ps_config
+
+      expect do
+        ps_client.get_primary_image 'product_id'
+      end.to raise_error Promostandards::Client::NoServiceUrlError
     end
 
     it 'ensures the structure of the message body' do
