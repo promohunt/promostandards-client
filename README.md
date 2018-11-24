@@ -5,11 +5,10 @@ A Ruby client to access [PromoStandards](https://promostandards.org) data from s
 Currently, only interfaces some of the [Product Data](https://promostandards.org/service/view/7/) and the [Media Content](https://promostandards.org/service/view/11/) services.
 
 #### TO DO
+
 - [x] Add tests
 - [x] Return `nil` when primary image is not available
 - [ ] Provide interfaces to other [services](https://promostandards.org/service/overview/) as well
-
-
 
 ## Installation
 
@@ -23,7 +22,6 @@ And then execute:
 
     $ bundle
 
-
 ## Usage
 
 ```ruby
@@ -34,6 +32,7 @@ client = PromoStandards::Client.new(
   password: 'YOUR PASSWORD'
   product_data_service_url: 'https://services.starline.com/CustomerProductDataService/CustomerProductDataService.svc'
   media_content_service_url: 'https://services.starline.com/MediaContentService/MediaContentService.svc'
+  product_pricing_and_configuration_service_url: 'https://services.starline.com/ppc/PricingAndConfiguration.svc'
 )
 
 # Get sellable product ids
@@ -47,8 +46,9 @@ primary_image = client.get_primary_image('product_id')
 ```
 
 ## Testing PromoStandards end points
-* Add credentials and service URLs to a `ps_configs.yml` (See `ps_configs.yml.example`)
-* Run `bundle exec ruby test_ps_services.rb`
+
+- Add credentials and service URLs to a `ps_configs.yml` (See `ps_configs.yml.example`)
+- Run `bundle exec ruby test_ps_services.rb`
 
 This would use the data in the YAML file, make sample requests to all the supplier services and log outcomes. This is useful to
 test out the services end to end.
@@ -72,6 +72,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 Everyone interacting in the `promostandards-client` project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/promohunt/promostandards-client/blob/master/CODE_OF_CONDUCT.md).
 
 ## About PromoHunt
+
 ![PromoHunt Logo](https://s3.amazonaws.com/promohunt-production/static/brand/promohunt_logo_with_text_medium.png)
 
 promostandards-client is maintained and funded by PromoHunt, inc. The names and logos for PromoHunt are trademarks of PromoHunt, inc.

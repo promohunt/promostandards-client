@@ -35,5 +35,11 @@ Parallel.each(ps_configs) do |ps_config|
   rescue
     puts "Failed to get image data from #{service_host}".colorize(:red)
   end
-  print_data(service_host, product, image)
+
+  begin
+    fob_points = client.get_fob_points sample_product_id
+  rescue
+    puts "Failed to get fob points data from #{service_host}".colorize(:red)
+  end
+  print_data(service_host, product, image, fob_points)
 end

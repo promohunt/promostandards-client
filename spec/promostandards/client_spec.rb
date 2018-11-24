@@ -4,7 +4,8 @@ RSpec.describe Promostandards::Client do
       access_id: 'access_id',
       password: 'password',
       product_data_service_url: 'https://psproductdata100.pcna.online/',
-      media_content_service_url: 'https://psmediacontent110.pcna.online/'
+      media_content_service_url: 'https://psmediacontent110.pcna.online/',
+      product_pricing_and_configuration_service_url: 'https://pspriceconfig100.pcna.online/'
     }
   end
   let(:ps_client) { PromoStandards::Client.new ps_config }

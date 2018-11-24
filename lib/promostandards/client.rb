@@ -15,11 +15,12 @@ module PromoStandards
 
     PRIMARY_IMAGE_PRECEDENCE = ['1006', ['1007', '1001', '2001'], ['1007', '1001'], '1007', ['1001', '2001'], '1001', '1003']
 
-    def initialize(access_id:, password: nil, product_data_service_url:, media_content_service_url: nil)
+    def initialize(access_id:, password: nil, product_data_service_url:, media_content_service_url: nil, product_pricing_and_configuration_service_url: nil)
       @access_id = access_id
       @password = password
       @product_data_service_url = product_data_service_url
       @media_content_service_url = media_content_service_url
+      @product_pricing_and_configuration_service_url = product_pricing_and_configuration_service_url
     end
 
     def get_sellable_product_ids
@@ -80,6 +81,27 @@ module PromoStandards
       PrimaryImageExtractor.new.extract(media_content)
     rescue => exception
       raise exception.class, "#{exception} - get_primary_image failed!"
+    end
+
+    def get_fob_points(product_id)
+      client = build_savon_client_for_product(@product_pricing_and_configuration_service_url)
+      response = client.call('GetFobPointsRequest',
+        message: {
+          'shar:wsVersion' => '1.0.0',
+          'shar:id' => @access_id,
+          'shar:password' => @password,
+          'shar:localizationCountry' => 'US',
+          'shar:localizationLanguage' => 'en',
+          'shar:productId' => product_id
+        },
+        soap_action: 'getFobPoints'
+      )
+
+      fob_points_hash = response.body[:get_fob_points_response][:fob_point]
+
+      fob_points_hash
+    rescue => exception
+      raise exception.class, "#{exception} - get_fob_points failed!"
     end
 
     private
