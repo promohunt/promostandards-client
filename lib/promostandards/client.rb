@@ -84,6 +84,7 @@ module PromoStandards
     end
 
     def get_fob_points(product_id)
+      raise Promostandards::Client::NoServiceUrlError, 'Product pricing and configuration service URL not set!' unless @product_pricing_and_configuration_service_url
       client = build_savon_client_for_product(@product_pricing_and_configuration_service_url)
       response = client.call('GetFobPointsRequest',
         message: {
