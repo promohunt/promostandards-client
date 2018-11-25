@@ -8,7 +8,7 @@ def print_data(service_host, product = {}, image = {}, fob_points = {})
   p "Product ID - #{product[:product_id]}"
   p "Product name - #{product[:product_name]}"
   p "Product description - #{product[:description]}"
-  p "Product primary image - #{image[:url]}"
+  p "Product primary image - #{image ? image[:url] : nil}"
   p "Product fob points - #{fob_points}"
 end
 

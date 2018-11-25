@@ -85,7 +85,7 @@ module PromoStandards
 
     def get_fob_points(product_id)
       raise Promostandards::Client::NoServiceUrlError, 'Product pricing and configuration service URL not set!' unless @product_pricing_and_configuration_service_url
-      client = build_savon_client_for_product(@product_pricing_and_configuration_service_url)
+      client = build_savon_client_for_product_pricing_and_configuration(@product_pricing_and_configuration_service_url)
       response = client.call('GetFobPointsRequest',
         message: {
           'shar:wsVersion' => '1.0.0',
@@ -98,7 +98,7 @@ module PromoStandards
         soap_action: 'getFobPoints'
       )
 
-      fob_points_hash = response.body[:get_fob_points_response][:fob_point]
+      fob_points_hash = response.body.dig(:get_fob_points_response, :fob_point_array, :fob_point)
 
       fob_points_hash
     rescue => exception
@@ -123,6 +123,16 @@ module PromoStandards
         namespace: 'http://www.promostandards.org/WSDL/MediaService/1.0.0/',
         namespaces: {
           'xmlns:shar' => 'http://www.promostandards.org/WSDL/MediaService/1.0.0/SharedObjects/'
+        }
+      )
+    end
+
+    def build_savon_client_for_product_pricing_and_configuration(service_url)
+      Savon.client COMMON_SAVON_CLIENT_CONFIG.merge(
+        endpoint: service_url,
+        namespace: 'http://www.promostandards.org/WSDL/PricingAndConfiguration/1.0.0/',
+        namespaces: {
+          'xmlns:shar' => 'http://www.promostandards.org/WSDL/PricingAndConfiguration/1.0.0/SharedObjects/'
         }
       )
     end
