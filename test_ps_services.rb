@@ -3,12 +3,13 @@ require 'parallel'
 require 'colorize'
 require 'pry'
 
-def print_data(service_host, product = {}, image = {})
+def print_data(service_host, product = {}, image = {}, fob_points = {})
   puts "For #{service_host}".colorize(:green)
   p "Product ID - #{product[:product_id]}"
   p "Product name - #{product[:product_name]}"
   p "Product description - #{product[:description]}"
-  p "Product primary image - #{image[:url]}"
+  p "Product primary image - #{image ? image[:url] : nil}"
+  p "Product fob points - #{fob_points}"
 end
 
 # Requires a ps_configs.yml file. See ps_configs.yml.example
@@ -35,5 +36,11 @@ Parallel.each(ps_configs) do |ps_config|
   rescue
     puts "Failed to get image data from #{service_host}".colorize(:red)
   end
-  print_data(service_host, product, image)
+
+  begin
+    fob_points = client.get_fob_points sample_product_id
+  rescue
+    puts "Failed to get fob points data from #{service_host}".colorize(:red)
+  end
+  print_data(service_host, product, image, fob_points)
 end

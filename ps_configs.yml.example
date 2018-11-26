@@ -3,7 +3,9 @@
   :password: PASSWORD
   :product_data_service_url: https://services.starline.com/CustomerProductDataService/CustomerProductDataService.svc
   :media_content_service_url: https://services.starline.com/MediaContentService/MediaContentService.svc
+  :product_pricing_and_configuration_service_url: https://services.starline.com/ppc/PricingAndConfiguration.svc
 - :access_id: USERNAME_OR_ID
   :password: PASSWORD
   :product_data_service_url: https://ppds.hitpromo.net/productData?ws=1
   :media_content_service_url: https://ppds.hitpromo.net/productMedia?ws=1
+  :product_pricing_and_configuration_service_url: https://ppds.hitpromo.net/pricingAndConfiguration

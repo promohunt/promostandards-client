@@ -4,7 +4,8 @@ RSpec.describe Promostandards::Client do
       access_id: 'access_id',
       password: 'password',
       product_data_service_url: 'https://psproductdata100.pcna.online/',
-      media_content_service_url: 'https://psmediacontent110.pcna.online/'
+      media_content_service_url: 'https://psmediacontent110.pcna.online/',
+      product_pricing_and_configuration_service_url: 'https://pspriceconfig100.pcna.online/'
     }
   end
   let(:ps_client) { PromoStandards::Client.new ps_config }
@@ -333,7 +334,42 @@ RSpec.describe Promostandards::Client do
         single_part: true
       })
     end
-
   end
 
+  describe '#get_fob_points' do
+    let(:savon_response) do
+      double(:savon_response, body: {
+        get_fob_points_response: {
+          fob_point_array: {
+            fob_point: [
+              {
+                product_id: 'product_id',
+                product_name: 'product_name',
+                description: 'product description'
+              }
+            ]
+          }
+        }
+      })
+    end
+
+    it 'ensures the structure of the message body' do
+      allow(savon_client).to receive(:call) do |arg1, arg2|
+        expect(arg2[:message].keys).to eql(
+          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:localizationCountry', 'shar:localizationLanguage', 'shar:productId']
+        )
+        savon_response
+      end
+
+      ps_client.get_fob_points 'product_id'
+    end
+
+    it 'extracts fob points from the response' do
+      allow(savon_client).to receive(:call).and_return savon_response
+
+      expect(ps_client.get_fob_points('product_id')).to eql(
+        savon_response.body[:get_fob_points_response][:fob_point_array][:fob_point]
+      )
+    end
+  end
 end

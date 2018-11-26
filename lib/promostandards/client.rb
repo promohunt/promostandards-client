@@ -15,11 +15,12 @@ module PromoStandards
 
     PRIMARY_IMAGE_PRECEDENCE = ['1006', ['1007', '1001', '2001'], ['1007', '1001'], '1007', ['1001', '2001'], '1001', '1003']
 
-    def initialize(access_id:, password: nil, product_data_service_url:, media_content_service_url: nil)
+    def initialize(access_id:, password: nil, product_data_service_url:, media_content_service_url: nil, product_pricing_and_configuration_service_url: nil)
       @access_id = access_id
       @password = password
       @product_data_service_url = product_data_service_url
       @media_content_service_url = media_content_service_url
+      @product_pricing_and_configuration_service_url = product_pricing_and_configuration_service_url
     end
 
     def get_sellable_product_ids
@@ -82,6 +83,28 @@ module PromoStandards
       raise exception.class, "#{exception} - get_primary_image failed!"
     end
 
+    def get_fob_points(product_id)
+      raise Promostandards::Client::NoServiceUrlError, 'Product pricing and configuration service URL not set!' unless @product_pricing_and_configuration_service_url
+      client = build_savon_client_for_product_pricing_and_configuration(@product_pricing_and_configuration_service_url)
+      response = client.call('GetFobPointsRequest',
+        message: {
+          'shar:wsVersion' => '1.0.0',
+          'shar:id' => @access_id,
+          'shar:password' => @password,
+          'shar:localizationCountry' => 'US',
+          'shar:localizationLanguage' => 'en',
+          'shar:productId' => product_id
+        },
+        soap_action: 'getFobPoints'
+      )
+
+      fob_points_hash = response.body.dig(:get_fob_points_response, :fob_point_array, :fob_point)
+
+      fob_points_hash
+    rescue => exception
+      raise exception.class, "#{exception} - get_fob_points failed!"
+    end
+
     private
 
     def build_savon_client_for_product(service_url)
@@ -100,6 +123,16 @@ module PromoStandards
         namespace: 'http://www.promostandards.org/WSDL/MediaService/1.0.0/',
         namespaces: {
           'xmlns:shar' => 'http://www.promostandards.org/WSDL/MediaService/1.0.0/SharedObjects/'
+        }
+      )
+    end
+
+    def build_savon_client_for_product_pricing_and_configuration(service_url)
+      Savon.client COMMON_SAVON_CLIENT_CONFIG.merge(
+        endpoint: service_url,
+        namespace: 'http://www.promostandards.org/WSDL/PricingAndConfiguration/1.0.0/',
+        namespaces: {
+          'xmlns:shar' => 'http://www.promostandards.org/WSDL/PricingAndConfiguration/1.0.0/SharedObjects/'
         }
       )
     end
