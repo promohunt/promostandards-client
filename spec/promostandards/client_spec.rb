@@ -372,4 +372,86 @@ RSpec.describe Promostandards::Client do
       )
     end
   end
+
+  describe '#get_prices' do
+    let(:savon_response) do
+      double(:savon_response, body: {
+        get_configuration_and_pricing_response: {
+          configuration: {
+            part_array: {
+              part: [
+                {
+                  part_group_required: true,
+                  part_group: "1",
+                  part_price_array: {
+                    part_price: [
+                      {
+                        price: "100.00",
+                        min_quantity: "100"
+                      },
+                      {
+                        price: "200.00",
+                        min_quantity: "25"
+                      }
+                    ]
+                  }
+                },
+                {
+                  part_group_required: true,
+                  part_group: "2",
+                  part_price_array: {
+                    part_price: [
+                      {
+                        price: "50.00",
+                        min_quantity: "100"
+                      },
+                      {
+                        price: "100.00",
+                        min_quantity: "25"
+                      }
+                    ]
+                  }
+                },
+                {
+                  part_group_required: false,
+                  part_group: "1",
+                  part_price_array: {
+                    part_price: [
+                      {
+                        price: "50.00",
+                        min_quantity: "100"
+                      },
+                      {
+                        price: "250.00",
+                        min_quantity: "25"
+                      }
+                    ]
+                  }
+                },
+              ]
+            }
+          }
+        }
+      })
+    end
+
+    it 'ensures the structure of the message body' do
+      allow(savon_client).to receive(:call) do |arg1, arg2|
+        expect(arg2[:message].keys).to eql(
+          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:localizationCountry', 'shar:localizationLanguage', 'shar:productId', 'shar:fobId', 'shar:currency', 'shar:priceType', 'shar:configurationType']
+        )
+        savon_response
+      end
+
+      ps_client.get_prices 'product_id', 'fob_id'
+    end
+
+    it 'extracts prices from the response' do
+      allow(savon_client).to receive(:call).and_return savon_response
+
+      expect(ps_client.get_prices('product_id', 'fob_id')).to eql(
+        savon_response.body[:get_configuration_and_pricing_response][:configuration][:part_array][:part]
+      )
+    end
+  end
 end

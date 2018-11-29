@@ -42,8 +42,14 @@ Parallel.each(ps_configs) do |ps_config|
     puts "Failed to get fob points data from #{service_host}".colorize(:red)
   end
 
+  fob_id_for_price = if fob_points.is_a?(Hash)
+    fob_points[:fob_id]
+  elsif fob_points.is_a?(Array)
+    fob_points[0][:fob_id]
+  end
+
   begin
-    prices = client.get_prices(sample_product_id, fob_points[0][:fob_id])
+    prices = client.get_prices(sample_product_id, fob_id_for_price) if fob_id_for_price
   rescue
     puts "Failed to get price data from #{service_host}".colorize(:red)
   end
