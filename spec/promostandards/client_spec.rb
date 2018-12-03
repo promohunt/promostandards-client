@@ -222,7 +222,7 @@ RSpec.describe Promostandards::Client do
                 product_id: "GNS6K424",
                 url: "1009_image_url",
                 media_type: "Image",
-                class_type_array: { class_type: { class_type_id: "1009", class_type_name: "Rear" } },
+                class_type_array: { class_type: { class_type_id: "1001", class_type_name: "Rear" } },
                 color: "Almond",
                 single_part: true
               },
