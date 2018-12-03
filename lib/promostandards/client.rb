@@ -105,6 +105,35 @@ module PromoStandards
       raise exception.class, "#{exception} - get_fob_points failed!"
     end
 
+    def get_prices(product_id, fob_id, configuration_type = 'Decorated')
+      raise Promostandards::Client::NoServiceUrlError, 'Product pricing and configuration service URL not set!' unless @product_pricing_and_configuration_service_url
+      client = build_savon_client_for_product_pricing_and_configuration(@product_pricing_and_configuration_service_url)
+      response = client.call('GetConfigurationAndPricingRequest',
+        message: {
+          'shar:wsVersion' => '1.0.0',
+          'shar:id' => @access_id,
+          'shar:password' => @password,
+          'shar:localizationCountry' => 'US',
+          'shar:localizationLanguage' => 'en',
+          'shar:productId' => product_id,
+          'shar:fobId' => fob_id,
+          'shar:currency' => 'USD',
+          'shar:priceType' => 'List',
+          'shar:configurationType' => configuration_type,
+        },
+        soap_action: 'getConfigurationAndPricing'
+      )
+
+      if configuration_type == 'Decorated' && response.body.dig(:get_configuration_and_pricing_response, :error_message, :code) == '406'
+        get_prices(product_id, fob_id, 'Blank')
+      end
+
+      prices_hash = response.body.dig(:get_configuration_and_pricing_response, :configuration, :part_array, :part)
+      prices_hash
+    rescue => exception
+      raise exception.class, "#{exception} - get_fob_points failed!"
+    end
+
     private
 
     def build_savon_client_for_product(service_url)
