@@ -20,7 +20,7 @@ module PromoStandards
               end
 
               if image_precendence_number.is_a?(Array)
-                (class_type_ids & image_precendence_number).any?
+                (image_precendence_number - class_type_ids).empty?
               else
                 class_type_ids.include?(image_precendence_number)
               end
