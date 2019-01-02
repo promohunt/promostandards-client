@@ -27,7 +27,8 @@ Parallel.each(ps_configs) do |ps_config|
   begin
     product_ids = client.get_sellable_product_ids
   rescue
-    errors << "Failed to get products ids from #{service_host}"
+    puts "\nFor #{service_host}".colorize(:green)
+    puts "Errors:\n- Failer to get products ids from #{service_host}".colorize(:red)
     next
   end
   sample_product_id = product_ids.sample
