@@ -131,7 +131,7 @@ module PromoStandards
       prices_hash = response.body.dig(:get_configuration_and_pricing_response, :configuration, :part_array, :part)
       prices_hash
     rescue => exception
-      raise exception.class, "#{exception} - get_fob_points failed!"
+      raise exception.class, "#{exception} - get_prices failed!"
     end
 
     private
