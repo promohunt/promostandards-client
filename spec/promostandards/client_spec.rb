@@ -435,6 +435,14 @@ RSpec.describe Promostandards::Client do
       })
     end
 
+    let(:savon_response_406) do
+      double(:savon_response, body: {
+        get_configuration_and_pricing_response: {
+          error_message: { code: "406" }
+        }
+      })
+    end
+
     it 'ensures the structure of the message body' do
       allow(savon_client).to receive(:call) do |arg1, arg2|
         expect(arg2[:message].keys).to eql(
@@ -448,6 +456,14 @@ RSpec.describe Promostandards::Client do
 
     it 'extracts prices from the response' do
       allow(savon_client).to receive(:call).and_return savon_response
+
+      expect(ps_client.get_prices('product_id', 'fob_id')).to eql(
+        savon_response.body[:get_configuration_and_pricing_response][:configuration][:part_array][:part]
+      )
+    end
+
+    it 'tries to get prices for "Blank" product if prices are not available for "Decorated" type' do
+      allow(savon_client).to receive(:call).and_return savon_response_406, savon_response
 
       expect(ps_client.get_prices('product_id', 'fob_id')).to eql(
         savon_response.body[:get_configuration_and_pricing_response][:configuration][:part_array][:part]

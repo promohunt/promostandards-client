@@ -126,10 +126,9 @@ module PromoStandards
 
       if configuration_type == 'Decorated' && response.body.dig(:get_configuration_and_pricing_response, :error_message, :code) == '406'
         get_prices(product_id, fob_id, 'Blank')
+      else
+        response.body.dig(:get_configuration_and_pricing_response, :configuration, :part_array, :part)
       end
-
-      prices_hash = response.body.dig(:get_configuration_and_pricing_response, :configuration, :part_array, :part)
-      prices_hash
     rescue => exception
       raise exception.class, "#{exception} - get_prices failed!"
     end
