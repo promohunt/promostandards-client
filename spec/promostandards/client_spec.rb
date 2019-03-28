@@ -356,7 +356,7 @@ RSpec.describe Promostandards::Client do
     it 'ensures the structure of the message body' do
       allow(savon_client).to receive(:call) do |arg1, arg2|
         expect(arg2[:message].keys).to eql(
-          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:localizationCountry', 'shar:localizationLanguage', 'shar:productId']
+          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:productId', 'shar:localizationCountry', 'shar:localizationLanguage',]
         )
         savon_response
       end
@@ -438,7 +438,7 @@ RSpec.describe Promostandards::Client do
     it 'ensures the structure of the message body' do
       allow(savon_client).to receive(:call) do |arg1, arg2|
         expect(arg2[:message].keys).to eql(
-          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:localizationCountry', 'shar:localizationLanguage', 'shar:productId', 'shar:fobId', 'shar:currency', 'shar:priceType', 'shar:configurationType']
+          ['shar:wsVersion', 'shar:id', 'shar:password', 'shar:productId', 'shar:currency', 'shar:fobId', 'shar:priceType', 'shar:localizationCountry', 'shar:localizationLanguage', 'shar:configurationType']
         )
         savon_response
       end

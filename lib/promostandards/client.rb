@@ -91,9 +91,9 @@ module PromoStandards
           'shar:wsVersion' => '1.0.0',
           'shar:id' => @access_id,
           'shar:password' => @password,
+          'shar:productId' => product_id,
           'shar:localizationCountry' => 'US',
           'shar:localizationLanguage' => 'en',
-          'shar:productId' => product_id
         },
         soap_action: 'getFobPoints'
       )
@@ -113,12 +113,12 @@ module PromoStandards
           'shar:wsVersion' => '1.0.0',
           'shar:id' => @access_id,
           'shar:password' => @password,
+          'shar:productId' => product_id,
+          'shar:currency' => 'USD',
+          'shar:fobId' => fob_id,
+          'shar:priceType' => 'List',
           'shar:localizationCountry' => 'US',
           'shar:localizationLanguage' => 'en',
-          'shar:productId' => product_id,
-          'shar:fobId' => fob_id,
-          'shar:currency' => 'USD',
-          'shar:priceType' => 'List',
           'shar:configurationType' => configuration_type,
         },
         soap_action: 'getConfigurationAndPricing'
