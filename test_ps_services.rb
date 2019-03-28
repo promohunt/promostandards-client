@@ -1,14 +1,19 @@
 require_relative 'lib/promostandards/client'
+require_relative 'lib/refinements'
 require 'parallel'
 require 'colorize'
 require 'pry'
 
-def print_data(service_host, product = {}, image = {}, fob_points = {}, prices = {})
+using Refinements
+
+def print_data(service_host, product = {}, image = {}, fob_points, prices)
   puts "For #{service_host}".colorize(:green)
   p "Product ID - #{product[:product_id]}"
   p "Product name - #{product[:product_name]}"
   p "Product description - #{product[:description]}"
   p "Product primary image - #{image ? image[:url] : nil}"
+  p "Fob points sample - #{fob_points.wrap_in_array.sample&.slice(:fob_id, :fob_city, :fob_state)}"
+  p "Prices sample - #{prices.wrap_in_array.first&.dig(:part_price_array, :part_price).wrap_in_array&.sample}"
 end
 
 # Requires a ps_configs.yml file. See ps_configs.yml.example
