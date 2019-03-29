@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    promostandards-client (0.8.2)
+    promostandards-client (0.8.4)
       httparty
       savon (~> 2.12.0)
 
@@ -71,6 +71,7 @@ GEM
 PLATFORMS
   ruby
   x86_64-darwin-17
+  x86_64-darwin-18
 
 DEPENDENCIES
   bundler (~> 1.16)
@@ -82,4 +83,4 @@ DEPENDENCIES
   rspec (~> 3.8)
 
 BUNDLED WITH
-   1.16.3
+   1.17.2
