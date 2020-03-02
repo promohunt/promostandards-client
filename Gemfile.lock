@@ -41,7 +41,7 @@ GEM
       byebug (>= 9.0, < 9.1)
       pry (~> 0.10)
     rack (2.0.8)
-    rake (12.3.1)
+    rake (13.0.1)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -79,7 +79,7 @@ DEPENDENCIES
   parallel (~> 1.12.1)
   promostandards-client!
   pry-byebug (~> 3.4.0)
-  rake (~> 12.3.1)
+  rake (~> 13.0.1)
   rspec (~> 3.8)
 
 BUNDLED WITH
